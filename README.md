@@ -89,3 +89,16 @@ We do not support OS X
 
 ##### The OHSystem was founded by Neubivljiv & Grief-Code.
 We have been working on the development process since over a year now and started the last months to include a full hosting platform which is constantly growing each day.
+
+## Building ghost.exe with Docker
+
+To cross-compile the Windows binary on macOS or Linux you can use the included `Dockerfile`. Build the image and mount a host directory to extract the result:
+
+```bash
+docker build -t ghost-builder .
+mkdir out
+docker run --rm -v "$(pwd)/out":/dist ghost-builder
+```
+
+The compiled `ghost.exe` will be placed inside the `out` directory on your host.
+
