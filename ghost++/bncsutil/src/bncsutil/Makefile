@@ -7,16 +7,11 @@ CC = gcc
 CCFLAGS = -Wall -O3 -I ../ -Wno-multichar -fPIC
 CCOBJ = nls.o pe.o sha1.o stack.o
 
-ifeq ($(SYSTEM),Darwin)
-LDFLAGS = -dynamiclib -lgmp -L/opt/local/lib
-TARGET = libbncsutil.dylib
-else
-LDFLAGS = -shared -lgmp
 TARGET = libbncsutil.so
-endif
+OBJS = $(CXXOBJ) $(CCOBJ)
 
-$(TARGET): $(CXXOBJ) $(CCOBJ)
-	$(CXX)  $(CXXFLAGS) $(LDFLAGS) $(CXXOBJ) $(CCOBJ) -o $(TARGET)
+$(TARGET): $(OBJS)
+	$(CXX) $(CXXFLAGS) -shared $(OBJS) -o libbncsutil.so
 
 $(CXXOBJ): %.o: %.cpp
 	$(CXX) $(CXXFLAGS) -c $< -o $@ 
