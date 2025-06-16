@@ -74,7 +74,7 @@ using namespace boost :: filesystem;
 string gCFGFile;
 string gLogFile;
 uint32_t gLogMethod;
-ofstream *gLog = NULL;
+std::ofstream *gLog = nullptr;
 CGHost *gGHost = NULL;
 
 uint32_t GetTime( )
@@ -148,7 +148,7 @@ void CONSOLE_Print( string message )
     {
         if( gLogMethod == 1 )
         {
-            ofstream Log;
+            std::ofstream Log;
             Log.open( gLogFile.c_str( ), ios :: app );
 
             if( !Log.fail( ) )
@@ -230,7 +230,7 @@ int main( int argc, char **argv )
             // log method 2: open the log on startup, flush the log for every message, close the log on shutdown
             // the log file CANNOT be edited/moved/deleted while GHost++ is running
 
-            gLog = new ofstream( );
+            gLog = new std::ofstream( );
             gLog->open( gLogFile.c_str( ), ios :: app );
         }
     }
@@ -1824,7 +1824,7 @@ void CGHost :: LoadRules( )
 {
     string File = m_SharedFilesPath + "rules.txt";
     string line;
-    ifstream myfile(File.c_str());
+    std::ifstream myfile(File.c_str());
     m_Rules.clear();
     if (myfile.is_open())
     {
@@ -1854,7 +1854,7 @@ void CGHost :: LoadRanks( )
 {
     //TODO Fix if the file is empty, dont check levels else there is a crash
     string File = m_SharedFilesPath + "ranks.txt";
-    ifstream in;
+    std::ifstream in;
     in.open( File.c_str() );
     m_Ranks.clear();
     if( !in.fail( ) )
@@ -1891,7 +1891,7 @@ void CGHost :: LoadInsult()
 {
     //TODO Fix if the file is empty, dont check levels else there is a crash
     string File = m_SharedFilesPath + "insult.txt";
-    ifstream in;
+    std::ifstream in;
     in.open( File.c_str() );
     m_Insults.clear();
     if( !in.fail( ) )
@@ -1950,7 +1950,7 @@ string CGHost :: GetRoomName (string RoomID)
 void CGHost :: ReadRoomData()
 {
     string file = m_SharedFilesPath + "rooms.txt";
-    ifstream in;
+    std::ifstream in;
     in.open( file.c_str( ) );
     m_LanRoomName.clear();
     if( in.fail( ) )
