@@ -1,25 +1,38 @@
 # syntax=docker/dockerfile:1
 
-# Stage 1: Build with cross-compiler
+#############################
+# Stage 1: Cross-compile on Linux container
+#############################
 FROM --platform=linux/amd64 dockcross/windows-static-x86 AS build
+
 WORKDIR /src
 
 # Copy source
 COPY . .
 
-# Disable MySQL to avoid extra dependencies
-RUN sed -i 's/^DFLAGS = -DGHOST_MYSQL/DFLAGS =/' ghost++/ghost/Makefile && \
-    sed -i 's/-lmysqlclient_r //' ghost++/ghost/Makefile
+# Install Boost and remove extra dependencies
+RUN apt-get update \
+    && apt-get install -y --no-install-recommends \
+    wget libboost-all-dev \
+    && rm -rf /var/lib/apt/lists/*
 
-# Generate and use dockcross wrapper on host instead of in-container
-# (Ensure you've run: docker run --rm dockcross/windows-static-x86 > dockcross && chmod +x dockcross)
-COPY ./dockcross-windows-static-x86 /usr/local/bin/dockcross
+# Patch out MySQL and GMP flags
+RUN sed -i 's/^DFLAGS = -DGHOST_MYSQL/DFLAGS =/' ghost++/ghost/Makefile \
+    && sed -i 's/-lmysqlclient_r //' ghost++/ghost/Makefile \
+    && sed -i 's/-lgmp//' ghost++/bncsutil/src/bncsutil/Makefile
 
-# Build libraries and executable
-RUN /usr/local/bin/dockcross bash -c \
-    "cd ghost++/bncsutil/src/bncsutil && make && \
-    cd ../../../../ghost && make"
+# Build bncsutil using cross-compiler directly
+RUN cd ghost++/bncsutil/src/bncsutil \
+    && make CC=x86_64-w64-mingw32-gcc \
+    CXX=x86_64-w64-mingw32-g++
 
-# Stage 2: Package only the .exe
+# Build the GHost++ bot itself
+RUN cd ghost++/ghost \
+    && make CC=x86_64-w64-mingw32-gcc \
+    CXX=x86_64-w64-mingw32-g++
+
+#############################
+# Stage 2: Export only the .exe
+#############################
 FROM scratch AS export
 COPY --from=build /src/ghost++/ghost/ghost++.exe /ghost.exe
