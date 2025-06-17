@@ -25,6 +25,7 @@ RUN wget -O mysql-connector.zip \
     && rm mysql-connector.zip \
     && mv mysql-connector-c-6.1.11-win32 mysql-connector \
     && gendef mysql-connector/lib/libmysql.dll \
+    && mv libmysql.def mysql-connector/lib/libmysql.def \
     && x86_64-w64-mingw32-dlltool -d mysql-connector/lib/libmysql.def \
        -l mysql-connector/lib/libmysql.a -D mysql-connector/lib/libmysql.dll
 
