@@ -29,6 +29,9 @@ ifeq ($(SYSTEM),Darwin)
 CFLAGS += -I../mysql/include/
 endif
 
+CFLAGS += $(EXTRA_CFLAGS)
+LFLAGS += $(EXTRA_LFLAGS)
+
 OBJS = bncsutilinterface.o bnet.o bnetprotocol.o bnlsclient.o bnlsprotocol.o commandpacket.o config.o crc32.o game.o game_base.o gameplayer.o gameprotocol.o gameslot.o gcbiprotocol.o ghost.o ghostdb.o ghostdbmysql.o gpsprotocol.o language.o map.o ohconnect.o packed.o replay.o savegame.o sha1.o socket.o stats.o statsdota.o statsw3mmd.o util.o
 COBJS =
 PROGS = ./ghost++
