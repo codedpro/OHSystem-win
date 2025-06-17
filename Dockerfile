@@ -15,13 +15,15 @@ RUN apt-get update \
     wget unzip libboost-all-dev \
     && rm -rf /var/lib/apt/lists/*
 
-# 3) Download the Windows Connector/C ZIP (x64) and unpack it,
-#    then rename the extracted folder to a stable path
+# 3) Download the Windows Connector/C ZIP (32-bit) and unpack it,
+#    then rename the extracted folder to a stable path. Using the
+#    32-bit version matches the dockcross base image which targets
+#    a 32-bit Windows toolchain.
 RUN wget -O mysql-connector.zip \
-    https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-winx64.zip \
+    https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-win32.zip \
     && unzip mysql-connector.zip \
     && rm mysql-connector.zip \
-    && mv mysql-connector-c-6.1.11-winx64 mysql-connector
+    && mv mysql-connector-c-6.1.11-win32 mysql-connector
 
 # 4) Expose where the connector lives
 ENV MYSQL_INC=/src/mysql-connector/include
