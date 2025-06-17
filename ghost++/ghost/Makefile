@@ -1,6 +1,6 @@
 SHELL = /bin/sh
 SYSTEM = $(shell uname)
-C++ = g++
+CXX ?= g++
 CC = gcc
 DFLAGS = -DGHOST_MYSQL
 OFLAGS = -O3 -g
@@ -36,13 +36,13 @@ PROGS = ./ghost++
 all: $(OBJS) $(COBJS) $(PROGS)
 
 ./ghost++: $(OBJS) $(COBJS)
-	$(C++) -o ./ghost++ $(OBJS) $(COBJS) $(LFLAGS)
+	$(CXX) -o ./ghost++ $(OBJS) $(COBJS) $(LFLAGS)
 
 clean:
 	rm -f $(OBJS) $(COBJS) $(PROGS)
 
 $(OBJS): %.o: %.cpp
-	$(C++) -o $@ $(CFLAGS) -c $<
+	$(CXX) -o $@ $(CFLAGS) -c $<
 
 $(COBJS): %.o: %.c
 	$(CC) -o $@ $(CFLAGS) -c $<
