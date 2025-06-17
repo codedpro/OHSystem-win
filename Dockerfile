@@ -12,7 +12,7 @@ COPY . .
 # 2) Install Boost & unzip
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    wget unzip libboost-all-dev \
+    wget unzip libboost-all-dev mingw-w64-tools \
     && rm -rf /var/lib/apt/lists/*
 
 # 3) Download the Windows Connector/C ZIP (32-bit) and unpack it,
@@ -23,7 +23,10 @@ RUN wget -O mysql-connector.zip \
     https://downloads.mysql.com/archives/get/p/19/file/mysql-connector-c-6.1.11-win32.zip \
     && unzip mysql-connector.zip \
     && rm mysql-connector.zip \
-    && mv mysql-connector-c-6.1.11-win32 mysql-connector
+    && mv mysql-connector-c-6.1.11-win32 mysql-connector \
+    && gendef mysql-connector/lib/libmysql.dll \
+    && x86_64-w64-mingw32-dlltool -d mysql-connector/lib/libmysql.def \
+       -l mysql-connector/lib/libmysql.a -D mysql-connector/lib/libmysql.dll
 
 # 4) Expose where the connector lives
 ENV MYSQL_INC=/src/mysql-connector/include
