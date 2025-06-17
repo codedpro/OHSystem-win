@@ -43,7 +43,7 @@ using namespace std;
  #include <winsock.h>
 #endif
 
-#include <mysql/mysql.h>
+#include <mysql.h>
 
 void CONSOLE_Print( string message )
 {
