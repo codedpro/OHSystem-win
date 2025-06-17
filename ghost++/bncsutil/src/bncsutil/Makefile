@@ -1,10 +1,10 @@
 SHELL = /bin/sh
 SYSTEM = $(shell uname)
 CXX = g++
-CXXFLAGS = -Wall -O3 -I ../ -Wno-multichar -fPIC
+CXXFLAGS = -Wall -O3 -I ../ -Wno-multichar -fPIC -DMUTIL_LIB_BUILD
 CXXOBJ = bsha1.o cdkeydecoder.o checkrevision.o decodekey.o file.o libinfo.o oldauth.o
 CC = gcc
-CCFLAGS = -Wall -O3 -I ../ -Wno-multichar -fPIC
+CCFLAGS = -Wall -O3 -I ../ -Wno-multichar -fPIC -DMUTIL_LIB_BUILD
 CCOBJ = nls.o pe.o sha1.o stack.o
 
 TARGET = libbncsutil.so
