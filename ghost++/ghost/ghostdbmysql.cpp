@@ -32,7 +32,7 @@
 #include <winsock.h>
 #endif
 
-#include <mysql/mysql.h>
+#include <mysql.h>
 #include <boost/thread.hpp>
 
 //
