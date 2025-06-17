@@ -48,8 +48,8 @@ RUN cd ghost++/ghost \
     && make \
     CC=i686-w64-mingw32-gcc \
     CXX=i686-w64-mingw32-g++ \
-    CFLAGS="-I../bncsutil/src -I../StormLib -I${MYSQL_INC}" \
-    LFLAGS="-L../bncsutil/src -L${MYSQL_LIB} -lmysql"
+    CFLAGS+="-I${MYSQL_INC}" \
+    LFLAGS+="-L${MYSQL_LIB} -lmysql"
 
 #############################
 # Stage 2: Export only the .exe
