@@ -12,7 +12,9 @@ COPY . .
 # 2) Install Boost & unzip
 RUN apt-get update \
     && apt-get install -y --no-install-recommends \
-    wget unzip libboost-all-dev mingw-w64-tools binutils-mingw-w64-i686 \
+    wget unzip libboost-all-dev \
+    mingw-w64-tools binutils-mingw-w64-i686 \
+    gcc-mingw-w64-i686 g++-mingw-w64-i686 \
     && rm -rf /var/lib/apt/lists/*
 
 # 3) Download the Windows Connector/C ZIP (32-bit) and unpack it,
